@@ -1,0 +1,45 @@
+***********************important Docker commands************************************
+TO CHECK THE OS of any LINUX BASED MACHINE in root Directory---> cat /etc/os-release
+
+to build docker imgae from docker file -------->   docker build -t vishal:1.0 .               <"." dot and location of docker file if present in pwd give "." i.e. dot>
+to check available docker images build -------> docker images
+
+to run container --->  docker run -d --name <containername optional> -p 8000:8080 <imahe name with version e.g visha:1.0>
+to check running containers----------------> docker ps
+to check running and stopped all conatainers------------> docker ps -a
+to go inside a  running container ------------> docker exec -it <container name> bash
+to check the status of running container like memory consumption and debug etc.----> docker stats
+to copy some file from local machine i.e. docker host to inside the coonatiner-------> docker cp localfile-with locatio <conatinername>:location
+to copy some file from inside the coonatiner to local machine i.e host -------> docker cp  <conatinername>:location/filename   location of dir in local if pwd give "." i.e. dot
+to remove image -------> docker rmi <image-id of the image>
+to stop container -----> docker stop <container name>
+to remove container ---> docker rm <container name>
+to create alias of image it will just give another name to same image  -----> docker tag <image name> <alias>
+
+
+If multiple docker files are present in one directory shall be name as below
+Dockerfile.apple1   Dockerfile.orange2 Dockerfile.pine4 Dockerfile.app1
+
+try Docker pull and push command
+
+try docker volume
+
+
+**********************Dockerfile  ***********************
+FROM ubuntu:20.04
+RUN apt update && apt install python3 -y && apt install python3-pip -y
+RUN pip3 install flask
+COPY app.py /opt
+EXPOSE 8080
+CMD ["python3","/opt/app.py"]
+
+**********************Application code*************************
+from flask import Flask
+import os
+app = Flask(__name__)
+@app.route('/')
+def hello():
+    return ('\nHello Container World! I have been seen %s times and my hostname is %s.\n\n')
+
+if __name__ == "__main__":
+   app.run(host="0.0.0.0", port=8080, debug=True)
